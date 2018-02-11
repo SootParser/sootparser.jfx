@@ -17,6 +17,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import soot.jimple.toolkits.callgraph.CallGraph;
+import thiagodnf.sootparser.builder.Builder;
 import thiagodnf.sootparser.component.MessageBox;
 import thiagodnf.sootparser.service.SootService;
 import thiagodnf.sootparser.util.FileUtil;
@@ -109,6 +110,10 @@ public class HomeController {
 		PreferencesUtil.save("tools", toolsTextBox.getText());
 		PreferencesUtil.save("main-class", mainClassTextBox.getText());
 		
+		List<String> classes = FileUtil.getClasses(binaryClassesTextBox.getText());
+		
+		System.out.println(classes);
+		
 		Task<CallGraph> task = new Task<CallGraph>() {
 
 			@Override
@@ -132,10 +137,13 @@ public class HomeController {
 			
 			@Override
 			public void handle(WorkerStateEvent event) {
+				
+				
+				Builder builder = new Builder(task.getValue(), classes);
+				
+				System.out.println(builder.parse());
+				
 				MessageBox.info(stage, "Done");
-				
-				//System.out.println(task.getValue());
-				
 			}
 		});
 		
