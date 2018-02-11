@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>thiagodnf.sootparser.jfx</groupId>
+	<artifactId>sootparser.jfx</artifactId>
+	<version>1.0.0</version>
+	<name>SootParser JFX</name>
+	<description>SootParser Powered by JavaFX</description>
+	<organization>
+		<name>thiagodnf</name>
+		<url>https://github.com/thiagodnf</url>
+	</organization>
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<dependencies>
+
+		<!-- MigLayout -->
+
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout-javafx</artifactId>
+			<version>4.2</version>
+		</dependency>
+
+		<!-- Apache Commons -->
+
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+		<!-- Logging -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>1.7.25</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
+		</dependency>
+		
+		<!-- Soot: A Java optimization framework -->
+		
+		<dependency> 
+			<groupId>sable</groupId>
+			<artifactId>soot</artifactId>
+			<version>2.5.0</version>
+		</dependency>
+		
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.zenjava</groupId>
+				<artifactId>javafx-maven-plugin</artifactId>
+				<version>8.8.3</version>
+				<configuration>
+					<vendor>thiagodnf</vendor>
+					<!-- executable JAR file is built by default (not optional at this stage) -->
+					<mainClass>thiagodnf.sootparser.jfx.Launcher</mainClass>
+					<!-- optionally override settings (such as jar file name, html file, etc) -->
+					<jarFileName>my-example-app.jar</jarFileName>
+					<!-- optionally build webstart bundle -->
+					<webstart>
+						<requiresAllPermissions>true</requiresAllPermissions>
+					</webstart>
+					<!-- optionally build native installers -->
+					<nativeInstallers />
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
+		<!-- In Project Repository -->
+		<repository>
+			<id>in-project</id>
+			<name>In Project Repository</name>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
+</project>
