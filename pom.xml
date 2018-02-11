@@ -1,11 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>thiagodnf.sootparser.jfx</groupId>
-	<artifactId>sootparser.jfx</artifactId>
+	<groupId>thiagodnf.sootparser</groupId>
+	<artifactId>sootparser</artifactId>
 	<version>1.0.0</version>
-	<name>SootParser JFX</name>
+	<name>SootParser</name>
 	<description>SootParser Powered by JavaFX</description>
+	<url>https://github.com/sootparser/sootparser</url>
 	<organization>
 		<name>SootParser</name>
 		<url>https://github.com/sootparser</url>
