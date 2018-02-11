@@ -1,5 +1,7 @@
 # Created by https://www.gitignore.io/api/java,eclipse,maven
 
+.DS_Store
+
 ### Eclipse ###
 
 .metadata
