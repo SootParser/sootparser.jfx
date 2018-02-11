@@ -7,8 +7,8 @@
 	<name>SootParser JFX</name>
 	<description>SootParser Powered by JavaFX</description>
 	<organization>
-		<name>thiagodnf</name>
-		<url>https://github.com/thiagodnf</url>
+		<name>SootParser</name>
+		<url>https://github.com/sootparser</url>
 	</organization>
 	<properties>
 		<java.version>1.8</java.version>
@@ -18,14 +18,6 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<dependencies>
-
-		<!-- MigLayout -->
-
-		<dependency>
-			<groupId>com.miglayout</groupId>
-			<artifactId>miglayout-javafx</artifactId>
-			<version>4.2</version>
-		</dependency>
 
 		<!-- Apache Commons -->
 
@@ -66,9 +58,9 @@
 				<configuration>
 					<vendor>thiagodnf</vendor>
 					<!-- executable JAR file is built by default (not optional at this stage) -->
-					<mainClass>thiagodnf.sootparser.jfx.Launcher</mainClass>
+					<mainClass>thiagodnf.sootparser.Launcher</mainClass>
 					<!-- optionally override settings (such as jar file name, html file, etc) -->
-					<jarFileName>my-example-app.jar</jarFileName>
+					<jarFileName>sootparser.jar</jarFileName>
 					<!-- optionally build webstart bundle -->
 					<webstart>
 						<requiresAllPermissions>true</requiresAllPermissions>

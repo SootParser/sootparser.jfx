@@ -1,4 +1,4 @@
-package thiagodnf.sootparser.jfx.controller;
+package thiagodnf.sootparser.controller;
 
 import java.io.File;
 
@@ -12,8 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import thiagodnf.sootparser.jfx.component.MessageBox;
-import thiagodnf.sootparser.jfx.service.SootService;
+import thiagodnf.sootparser.component.MessageBox;
+import thiagodnf.sootparser.service.SootService;
 
 public class HomeController {
 

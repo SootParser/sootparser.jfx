@@ -1,4 +1,4 @@
-package thiagodnf.sootparser.jfx.service;
+package thiagodnf.sootparser.service;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
 import soot.options.Options;
-import thiagodnf.sootparser.jfx.util.OSUtil;
+import thiagodnf.sootparser.util.OSUtil;
 
 public class SootService {
 

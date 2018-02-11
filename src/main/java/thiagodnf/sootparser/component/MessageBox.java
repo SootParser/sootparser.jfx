@@ -1,4 +1,4 @@
-package thiagodnf.sootparser.jfx.component;
+package thiagodnf.sootparser.component;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;

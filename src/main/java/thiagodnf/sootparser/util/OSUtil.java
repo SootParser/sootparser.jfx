@@ -1,4 +1,4 @@
-package thiagodnf.sootparser.jfx.util;
+package thiagodnf.sootparser.util;
 
 public class OSUtil {
 

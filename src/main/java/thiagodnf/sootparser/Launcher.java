@@ -1,4 +1,4 @@
-package thiagodnf.sootparser.jfx;
+package thiagodnf.sootparser;
 
 import java.net.URL;
 
@@ -13,7 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import thiagodnf.sootparser.jfx.util.OSUtil;
+import thiagodnf.sootparser.util.OSUtil;
 
 @SuppressWarnings("restriction")
 public class Launcher extends Application {
