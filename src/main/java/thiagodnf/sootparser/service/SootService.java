@@ -1,5 +1,9 @@
 package thiagodnf.sootparser.service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -8,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import soot.Scene;
 import soot.SootClass;
 import soot.SootMethod;
+import soot.jimple.toolkits.callgraph.CHATransformer;
+import soot.jimple.toolkits.callgraph.CallGraph;
 import soot.options.Options;
 import thiagodnf.sootparser.util.OSUtil;
 
@@ -38,15 +44,46 @@ public class SootService {
 		mainClass.setApplicationClass();
 		Scene.v().setMainClass(mainClass);
 
-		LOGGER.info("\t Name: " + mainClass.getName());
-		LOGGER.info("\t Short Name: " + mainClass.getShortName());
+		LOGGER.info("Name: " + mainClass.getName());
+		LOGGER.info("Short Name: " + mainClass.getShortName());
 
 		List<SootMethod> ep = Scene.v().getEntryPoints();
 
-		System.out.println(ep);
-
+		LOGGER.info("Entering points:");
+		ep.stream().map(m -> m.toString()).forEach(LOGGER::info);
+		
 		ep.add(Scene.v().getMainMethod());
 		Scene.v().setEntryPoints(ep);
+	}
+	
+	public List<String> getClasspaths(String jarFile, List<String> tools) {
+
+		List<String> classpaths = new ArrayList<>();
+		
+		String userDir = System.getProperty("user.dir");
+
+		String dir = userDir + File.separator + "lib" + File.separator + "java-1.7";
+		
+		classpaths.add(dir + File.separator + "javaws.jar");
+		classpaths.add(dir + File.separator + "jce.jar");
+		classpaths.add(dir + File.separator + "jsse.jar");
+		classpaths.add(dir + File.separator + "rt.jar");
+
+		classpaths.addAll(tools);
+		classpaths.add(jarFile);
+
+		return classpaths;
+	}
+	
+	public CallGraph buildCallGraph() {
+
+		LOGGER.info("Building the CallGraph");
+
+		Scene.v().loadNecessaryClasses();
+
+		CHATransformer.v().transform();
+
+		return Scene.v().getCallGraph();
 	}
 	
 	public void defineVerbose(boolean activated) {

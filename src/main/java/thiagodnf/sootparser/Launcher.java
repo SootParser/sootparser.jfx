@@ -37,7 +37,7 @@ public class Launcher extends Application {
 
 	public void start(Stage stage) throws Exception {
 
-		LOGGER.info("Starting SootParser JFX");
+		LOGGER.info("Starting SootParser");
 
 		String fxmlFile = "/fxml/home.fxml";
 		LOGGER.debug("Loading FXML for main view from: {}", fxmlFile);
@@ -48,7 +48,7 @@ public class Launcher extends Application {
 		Scene scene = new Scene(rootNode);
 		scene.getStylesheets().add("/styles/styles.css");
 
-		stage.setTitle("SootParser JFX");
+		stage.setTitle("SootParser");
 		stage.setScene(scene);
 		stage.show();
 		

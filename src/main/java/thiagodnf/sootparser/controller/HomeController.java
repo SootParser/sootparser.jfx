@@ -1,19 +1,26 @@
 package thiagodnf.sootparser.controller;
 
 import java.io.File;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import soot.jimple.toolkits.callgraph.CallGraph;
 import thiagodnf.sootparser.component.MessageBox;
 import thiagodnf.sootparser.service.SootService;
+import thiagodnf.sootparser.util.FileUtil;
+import thiagodnf.sootparser.util.PreferencesUtil;
 
 public class HomeController {
 
@@ -41,7 +48,13 @@ public class HomeController {
 	private Pane parent;
 	
 	private SootService sootService = new SootService();
-
+	
+	public void restoreButton() {
+		binaryClassesTextBox.setText(PreferencesUtil.restore("binary-classes"));
+		toolsTextBox.setText(PreferencesUtil.restore("tools"));
+		mainClassTextBox.setText(PreferencesUtil.restore("main-class"));
+	}
+	
 	public void openBinaryClasses() {
 
 		LOGGER.info("Opening Directory Chooser for Binary Classes");
@@ -79,20 +92,53 @@ public class HomeController {
 
 	public void generate() {
 		
+		Stage stage = (Stage) parent.getScene().getWindow();
+		
 		if (StringUtils.isEmpty(binaryClassesTextBox.getText())) {
-			MessageBox.error("Binary Class is required");
+			MessageBox.error(stage, "Binary Class is required");
 			return;
 		}
 		
 		if (StringUtils.isEmpty(mainClassTextBox.getText())) {
-			MessageBox.error("Main Class is required");
+			MessageBox.error(stage, "Main Class is required");
 			return;
 		}
 		
-		sootService.defineAllowPhantomRefs(allowPhantomRefsCheckbox.isSelected());
-		sootService.defineVerbose(verboseCheckbox.isSelected());
-		sootService.defineWholeProgram(wholeProgramCheckbox.isSelected());
+		LOGGER.info("Saving the preferences");
+		PreferencesUtil.save("binary-classes", binaryClassesTextBox.getText());
+		PreferencesUtil.save("tools", toolsTextBox.getText());
+		PreferencesUtil.save("main-class", mainClassTextBox.getText());
 		
+		Task<CallGraph> task = new Task<CallGraph>() {
+
+			@Override
+			protected CallGraph call() throws Exception {
+
+				sootService.defineAllowPhantomRefs(allowPhantomRefsCheckbox.isSelected());
+				sootService.defineVerbose(verboseCheckbox.isSelected());
+				sootService.defineWholeProgram(wholeProgramCheckbox.isSelected());
+				
+				List<String> tools = FileUtil.getFiles(toolsTextBox.getText());
+				List<String> classpaths = sootService.getClasspaths(binaryClassesTextBox.getText(), tools);
+				
+				sootService.defineTheClassPath(classpaths);
+				sootService.defineTheMainClass(mainClassTextBox.getText());
+				
+				return sootService.buildCallGraph();
+			}
+		};
 		
+		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			
+			@Override
+			public void handle(WorkerStateEvent event) {
+				MessageBox.info(stage, "Done");
+				
+				//System.out.println(task.getValue());
+				
+			}
+		});
+		
+		new Thread(task).start();
 	}
 }
