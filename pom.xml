@@ -18,6 +18,12 @@
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
+	<developers>
+	    <developer>
+	    	 <name>Thiago Ferreira</name>
+	    	 <url>https://github.com/thiagodnf</url>
+	    </developer>
+    </developers>
 	<dependencies>
 
 		<!-- Apache Commons -->
