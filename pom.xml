@@ -84,6 +84,23 @@
 			</plugin>
 		</plugins>
 	</build>
+	<profiles>
+		<profile>
+			<activation>
+				<os>
+					<family>Windows</family>
+					<arch>amd64</arch>
+				</os>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>com.apple.eawt</groupId>
+					<artifactId>eawt</artifactId>
+					<version>1.4</version>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
 	<repositories>
 		<!-- In Project Repository -->
 		<repository>
