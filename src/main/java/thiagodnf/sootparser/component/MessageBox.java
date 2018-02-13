@@ -3,6 +3,9 @@ package thiagodnf.sootparser.component;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
@@ -12,11 +15,13 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-
-
 public class MessageBox {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageBox.class);
+	
 	public static void message(Stage stage, AlertType type, String title, String message) {
+		
+		LOGGER.info(type + ": " + message);
 		
 		Alert alert = new Alert(type);
 		alert.setTitle(title);

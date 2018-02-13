@@ -54,6 +54,19 @@
                                     <Insets top="10.0" />
                                  </padding>
                               </VBox>
+                              <VBox prefWidth="100.0">
+                                 <children>
+                                    <Label text="Output" />
+                                    <HBox>
+                                       <children>
+                                          <TextField fx:id="outputTextBox" text="output.blocks" HBox.hgrow="ALWAYS" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </VBox>
                               <Label text="Properties">
                                  <VBox.margin>
                                     <Insets top="10.0" />

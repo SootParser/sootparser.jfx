@@ -54,6 +54,11 @@ public class AttributeGenerator extends AbstractGenerator {
 		List<String> attributes = new ArrayList<>();
 		
 		for (SootField field : cls.getFields()) {
+			
+			if(field.getName().startsWith("this$")) {
+				continue;
+			}
+			
 			attributes.add(generate(field));
 		}
 		

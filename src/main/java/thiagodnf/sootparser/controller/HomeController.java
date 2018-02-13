@@ -2,11 +2,13 @@ package thiagodnf.sootparser.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +44,9 @@ public class HomeController {
 	private TextField mainClassTextBox;
 	
 	@FXML
+	private TextField outputTextBox;
+	
+	@FXML
 	private CheckBox verboseCheckbox;
 	
 	@FXML
@@ -59,9 +64,12 @@ public class HomeController {
 		binaryClassesTextBox.setText(PreferencesUtil.restore("binary-classes"));
 		toolsTextBox.setText(PreferencesUtil.restore("tools"));
 		mainClassTextBox.setText(PreferencesUtil.restore("main-class"));
+		outputTextBox.setText(PreferencesUtil.restore("output"));
 	}
 	
 	public void openPropertiesButton() {
+		
+		LOGGER.info("Opening File Chooser for Properties file");
 
 		Stage stage = (Stage) parent.getScene().getWindow();
 		
@@ -79,6 +87,7 @@ public class HomeController {
 				binaryClassesTextBox.setText(prop.getProperty("binary-classes"));
 				toolsTextBox.setText(prop.getProperty("tools"));
 				mainClassTextBox.setText(prop.getProperty("main-class"));
+				outputTextBox.setText(prop.getProperty("output"));
 			} catch (IOException ex) {
 				MessageBox.exception(stage, ex);
 				return;
@@ -118,10 +127,15 @@ public class HomeController {
 	}
 	
 	public void close() {
+		
+		LOGGER.info("Closing the app...");
+		
 		System.exit(0);
 	}
 
 	public void generate() {
+		
+		LOGGER.info("Generating...");
 		
 		Stage stage = (Stage) parent.getScene().getWindow();
 		
@@ -135,23 +149,30 @@ public class HomeController {
 			return;
 		}
 		
-		String binaryClasses = binaryClassesTextBox.getText();
+		if (StringUtils.isEmpty(outputTextBox.getText())) {
+			MessageBox.error(stage, "Output is required");
+			return;
+		}
+		
+		String binaryClassesPath = binaryClassesTextBox.getText();
 		String toolsPath = toolsTextBox.getText();
 		String mainClass = mainClassTextBox.getText();
+		String outputPath = outputTextBox.getText();
 		
 		LOGGER.info("Saving the preferences");
-		PreferencesUtil.save("binary-classes", binaryClasses);
+		PreferencesUtil.save("binary-classes", binaryClassesPath);
 		PreferencesUtil.save("tools", toolsPath);
 		PreferencesUtil.save("main-class", mainClass);
+		PreferencesUtil.save("output", outputPath);
 		
 		List<String> classes;
 		List<String> tools;
 		List<String> classpaths;
 		
 		try {
-			classes = FileUtil.getClasses(binaryClasses);
+			classes = FileUtil.getClasses(binaryClassesPath);
 			tools = FileUtil.getFiles(toolsPath);
-			classpaths = sootService.getClasspaths(binaryClasses, tools);
+			classpaths = sootService.getClasspaths(binaryClassesPath, tools);
 		} catch (IOException ex) {
 			MessageBox.exception(stage, ex);
 			return;
@@ -165,10 +186,6 @@ public class HomeController {
 				sootService.defineAllowPhantomRefs(allowPhantomRefsCheckbox.isSelected());
 				sootService.defineVerbose(verboseCheckbox.isSelected());
 				sootService.defineWholeProgram(wholeProgramCheckbox.isSelected());
-				
-				
-				
-				
 				sootService.defineTheClassPath(classpaths);
 				sootService.defineTheMainClass(mainClass);
 				
@@ -187,9 +204,16 @@ public class HomeController {
 				
 				Builder builder = new Builder(task.getValue(), classes);
 				
-				System.out.println(builder.parse());
+				String content = builder.parse();
 				
-				MessageBox.info(stage, "Done");
+				File output = new File(outputPath);
+				
+				try {
+					FileUtils.writeStringToFile(output, content, Charset.forName("UTF-8"));
+					MessageBox.info(stage, "Done");
+				} catch (IOException e) {
+					MessageBox.exception(stage, task.getException());
+				}
 			}
 		});
 		
