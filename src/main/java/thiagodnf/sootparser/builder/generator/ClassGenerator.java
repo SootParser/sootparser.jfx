@@ -29,7 +29,7 @@ public class ClassGenerator extends AbstractGenerator {
 	}
 	
 	@Override
-	public List<String> generate(CallGraph cg, SootClass cls) {
+	public List<String> generate(CallGraph cg, SootClass cls, List<SootClass> classes) {
 		
 		StringBuilder builder = new StringBuilder();
 		

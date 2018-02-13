@@ -2,9 +2,9 @@ package thiagodnf.sootparser.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
-import org.omg.Dynamic.Parameter;
 
 import soot.Scene;
 import soot.SootClass;
@@ -12,8 +12,11 @@ import soot.jimple.toolkits.callgraph.CallGraph;
 import thiagodnf.sootparser.builder.generator.AbstractGenerator;
 import thiagodnf.sootparser.builder.generator.AttributeGenerator;
 import thiagodnf.sootparser.builder.generator.ClassGenerator;
+import thiagodnf.sootparser.builder.generator.GeneralizationGenerator;
 import thiagodnf.sootparser.builder.generator.MethodGenerator;
 import thiagodnf.sootparser.builder.generator.ParameterGenerator;
+import thiagodnf.sootparser.builder.generator.RealizationGenerator;
+import thiagodnf.sootparser.builder.generator.RelationGenerator;
 
 public class Builder {
 	
@@ -44,11 +47,18 @@ public class Builder {
 		this.addGenerator(new AttributeGenerator());
 		this.addGenerator(new ParameterGenerator());
 		this.addGenerator(new MethodGenerator());
+		this.addGenerator(new GeneralizationGenerator());
+		this.addGenerator(new RealizationGenerator());
+		this.addGenerator(new RelationGenerator());
 		
 		// We will process only the class of the system under analysis.
 		// So, we need to filter these one
 		for (SootClass c : Scene.v().getClasses()) {
 			if (classes.contains(c.toString())) {
+				if(Pattern.compile("(.+)\\$(\\d+)").matcher(c.getName()).find()) {
+					continue;
+				}
+				
 				this.classes.add(c);
 			}
 		}
@@ -69,7 +79,7 @@ public class Builder {
 			rows.add("StartClass " + (i + 1));
 
 			for (AbstractGenerator generator : getGenerators()) {
-				rows.addAll(generator.generate(cg, cls));
+				rows.addAll(generator.generate(cg, cls, classes));
 			}
 
 			rows.add("EndClass " + (i + 1));

@@ -34,6 +34,8 @@ public class MethodGenerator extends AbstractGenerator {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append("Method(");
+		builder.append(method.getNumber());
+		builder.append(",");
 		builder.append(method.getName());
 		builder.append(",");
 		builder.append(method.getReturnType());
@@ -49,11 +51,16 @@ public class MethodGenerator extends AbstractGenerator {
 	}
 	
 	@Override
-	public List<String> generate(CallGraph cg, SootClass cls) {
+	public List<String> generate(CallGraph cg, SootClass cls, List<SootClass> classes) {
 		
 		List<String> lines = new ArrayList<String>();
 
 		for (SootMethod method : cls.getMethods()) {
+			
+			if (method.getName().contains("<clinit>")) {
+				continue;
+			}
+			
 			lines.add(generate(method));
 		}
 

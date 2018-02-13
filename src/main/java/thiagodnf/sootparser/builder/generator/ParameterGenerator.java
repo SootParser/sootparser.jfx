@@ -15,10 +15,9 @@ public class ParameterGenerator extends AbstractGenerator {
 		StringBuilder builder = new StringBuilder();
 
 		builder.append("Parameter(");
-		builder.append(method.getName());
+		builder.append(method.getNumber());
 		builder.append(",");
 		builder.append(parameter.toString());
-		builder.append(",");
 		builder.append(");");
 
 		return builder.toString();
@@ -26,11 +25,15 @@ public class ParameterGenerator extends AbstractGenerator {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<String> generate(CallGraph cg, SootClass cls) {
+	public List<String> generate(CallGraph cg, SootClass cls, List<SootClass> classes) {
 		
 		List<String> lines = new ArrayList<String>();
 
 		for (SootMethod method : cls.getMethods()) {
+			
+			if (method.getName().contains("<clinit>")) {
+				continue;
+			}
 			
 			List<Type> types = method.getParameterTypes();
 			

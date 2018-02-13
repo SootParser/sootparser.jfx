@@ -112,8 +112,6 @@ public class HomeController {
 		
 		List<String> classes = FileUtil.getClasses(binaryClassesTextBox.getText());
 		
-		System.out.println(classes);
-		
 		Task<CallGraph> task = new Task<CallGraph>() {
 
 			@Override
@@ -137,7 +135,6 @@ public class HomeController {
 			
 			@Override
 			public void handle(WorkerStateEvent event) {
-				
 				
 				Builder builder = new Builder(task.getValue(), classes);
 				

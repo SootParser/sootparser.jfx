@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import thiagodnf.sootparser.util.FXMLUtil;
 import thiagodnf.sootparser.util.OSUtil;
 
 @SuppressWarnings("restriction")
@@ -22,7 +22,16 @@ public class Launcher extends Application {
 	
 	public static void main(String[] args) throws Exception {
 		
+		LOGGER.info("Starting SootParser");
+		LOGGER.info("Operational System: {}", System.getProperty("os.name"));
+		
 		if (OSUtil.isMac()) {
+			
+			System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
+			System.setProperty("apple.laf.useScreenMenuBar", "true");
+			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SootParser");
+			System.setProperty("apple.awt.application.name", "SootParser");
+			
 			try {
 				URL iconURL = Launcher.class.getResource("/images/icon.png");
 				java.awt.Image image = new ImageIcon(iconURL).getImage();
@@ -37,21 +46,14 @@ public class Launcher extends Application {
 
 	public void start(Stage stage) throws Exception {
 
-		LOGGER.info("Starting SootParser");
+		Parent rootNode = (Parent) FXMLUtil.load("/fxml/home.fxml");
 
-		String fxmlFile = "/fxml/home.fxml";
-		LOGGER.debug("Loading FXML for main view from: {}", fxmlFile);
-		FXMLLoader loader = new FXMLLoader();
-		Parent rootNode = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-
-		LOGGER.debug("Showing JFX scene");
 		Scene scene = new Scene(rootNode);
 		scene.getStylesheets().add("/styles/styles.css");
 
 		stage.setTitle("SootParser");
 		stage.setScene(scene);
-		stage.show();
-		
 		stage.getIcons().add(new Image(this.getClass().getResourceAsStream("/images/icon.png")));
+		stage.show();
 	}
 }

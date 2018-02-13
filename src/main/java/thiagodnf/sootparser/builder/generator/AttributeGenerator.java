@@ -49,7 +49,7 @@ public class AttributeGenerator extends AbstractGenerator {
 	}
 	
 	@Override
-	public List<String> generate(CallGraph cg, SootClass cls) {
+	public List<String> generate(CallGraph cg, SootClass cls, List<SootClass> classes) {
 		
 		List<String> attributes = new ArrayList<>();
 		
