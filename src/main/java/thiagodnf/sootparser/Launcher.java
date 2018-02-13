@@ -24,6 +24,7 @@ public class Launcher extends Application {
 		
 		LOGGER.info("Starting SootParser");
 		LOGGER.info("Operational System: {}", System.getProperty("os.name"));
+		LOGGER.info("User Directory: {}", System.getProperty("user.dir"));
 		
 		if (OSUtil.isMac()) {
 			

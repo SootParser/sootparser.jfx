@@ -28,6 +28,10 @@ public class RelationGenerator extends AbstractGenerator {
 				continue;
 			}
 			
+			if(target.getName().startsWith("access$")) {
+				continue;
+			}
+			
 			// We want to avoid the call-in. So, the target and the method should be different
 			if ( ! target.getDeclaringClass().equals(method.getDeclaringClass())) {
 				continue;
@@ -61,6 +65,10 @@ public class RelationGenerator extends AbstractGenerator {
 			SootMethod target = (SootMethod) targets.next();
 			
 			if (target.getName().contains("<clinit>")) {
+				continue;
+			}
+			
+			if(target.getName().startsWith("access$")) {
 				continue;
 			}
 
@@ -121,6 +129,10 @@ public class RelationGenerator extends AbstractGenerator {
 		for (SootMethod method : cls.getMethods()) {
 			
 			if (method.getName().contains("<clinit>")) {
+				continue;
+			}
+			
+			if(method.getName().startsWith("access$")) {
 				continue;
 			}
 			

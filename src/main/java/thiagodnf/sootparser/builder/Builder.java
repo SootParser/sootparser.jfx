@@ -55,7 +55,7 @@ public class Builder {
 		// So, we need to filter these one
 		for (SootClass c : Scene.v().getClasses()) {
 			if (classes.contains(c.toString())) {
-				if(Pattern.compile("(.+)\\$(\\d+)").matcher(c.getName()).find()) {
+				if(Pattern.compile("((.+)\\$)+(\\d+)").matcher(c.getName()).find()) {
 					continue;
 				}
 				

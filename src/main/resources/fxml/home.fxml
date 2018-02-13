@@ -21,7 +21,7 @@
                                     <Label text="Binary Classes" />
                                     <HBox>
                                        <children>
-                                          <TextField fx:id="binaryClassesTextBox" editable="false" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="binaryClassesTextBox" editable="true" HBox.hgrow="ALWAYS" />
                                           <Button fx:id="openBinaryClassesButton" mnemonicParsing="false" onAction="#openBinaryClasses" text="Select" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
@@ -32,7 +32,7 @@
                                     <Label text="Tools" />
                                     <HBox>
                                        <children>
-                                          <TextField fx:id="toolsTextBox" editable="false" HBox.hgrow="ALWAYS" />
+                                          <TextField fx:id="toolsTextBox" editable="true" HBox.hgrow="ALWAYS" />
                                           <Button fx:id="openToolsButton" mnemonicParsing="false" onAction="#openTools" text="Select" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
@@ -54,11 +54,24 @@
                                     <Insets top="10.0" />
                                  </padding>
                               </VBox>
-                              <Button mnemonicParsing="false" onAction="#restoreButton" text="Restore">
+                              <Label text="Properties">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
-                              </Button>
+                              </Label>
+                              <HBox prefWidth="200.0">
+                                 <children>
+                                    <Button mnemonicParsing="false" onAction="#openPropertiesButton" text="Open" />
+                                    <Button mnemonicParsing="false" onAction="#restorePropertiesButton" text="Restore">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
                            </children>
                            <padding>
                               <Insets left="10.0" right="10.0" top="10.0" />

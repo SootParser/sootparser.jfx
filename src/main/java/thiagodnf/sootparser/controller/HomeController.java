@@ -1,7 +1,11 @@
 package thiagodnf.sootparser.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -15,6 +19,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import soot.jimple.toolkits.callgraph.CallGraph;
 import thiagodnf.sootparser.builder.Builder;
@@ -50,10 +55,35 @@ public class HomeController {
 	
 	private SootService sootService = new SootService();
 	
-	public void restoreButton() {
+	public void restorePropertiesButton() {
 		binaryClassesTextBox.setText(PreferencesUtil.restore("binary-classes"));
 		toolsTextBox.setText(PreferencesUtil.restore("tools"));
 		mainClassTextBox.setText(PreferencesUtil.restore("main-class"));
+	}
+	
+	public void openPropertiesButton() {
+
+		Stage stage = (Stage) parent.getScene().getWindow();
+		
+		final FileChooser fileChooser = new FileChooser();
+		
+		fileChooser.setInitialDirectory(new File(System.getProperty("user.dir")));
+		
+		File file = fileChooser.showOpenDialog(stage);
+		
+		if(file != null) {
+			
+			try {
+				Properties prop = PreferencesUtil.load(file);
+			
+				binaryClassesTextBox.setText(prop.getProperty("binary-classes"));
+				toolsTextBox.setText(prop.getProperty("tools"));
+				mainClassTextBox.setText(prop.getProperty("main-class"));
+			} catch (IOException ex) {
+				MessageBox.exception(stage, ex);
+				return;
+			}
+		}
 	}
 	
 	public void openBinaryClasses() {
@@ -105,12 +135,27 @@ public class HomeController {
 			return;
 		}
 		
-		LOGGER.info("Saving the preferences");
-		PreferencesUtil.save("binary-classes", binaryClassesTextBox.getText());
-		PreferencesUtil.save("tools", toolsTextBox.getText());
-		PreferencesUtil.save("main-class", mainClassTextBox.getText());
+		String binaryClasses = binaryClassesTextBox.getText();
+		String toolsPath = toolsTextBox.getText();
+		String mainClass = mainClassTextBox.getText();
 		
-		List<String> classes = FileUtil.getClasses(binaryClassesTextBox.getText());
+		LOGGER.info("Saving the preferences");
+		PreferencesUtil.save("binary-classes", binaryClasses);
+		PreferencesUtil.save("tools", toolsPath);
+		PreferencesUtil.save("main-class", mainClass);
+		
+		List<String> classes;
+		List<String> tools;
+		List<String> classpaths;
+		
+		try {
+			classes = FileUtil.getClasses(binaryClasses);
+			tools = FileUtil.getFiles(toolsPath);
+			classpaths = sootService.getClasspaths(binaryClasses, tools);
+		} catch (IOException ex) {
+			MessageBox.exception(stage, ex);
+			return;
+		}
 		
 		Task<CallGraph> task = new Task<CallGraph>() {
 
@@ -121,15 +166,19 @@ public class HomeController {
 				sootService.defineVerbose(verboseCheckbox.isSelected());
 				sootService.defineWholeProgram(wholeProgramCheckbox.isSelected());
 				
-				List<String> tools = FileUtil.getFiles(toolsTextBox.getText());
-				List<String> classpaths = sootService.getClasspaths(binaryClassesTextBox.getText(), tools);
+				
+				
 				
 				sootService.defineTheClassPath(classpaths);
-				sootService.defineTheMainClass(mainClassTextBox.getText());
+				sootService.defineTheMainClass(mainClass);
 				
 				return sootService.buildCallGraph();
 			}
 		};
+		
+		task.setOnFailed(evt -> {
+			MessageBox.exception(stage, task.getException());
+		});
 		
 		task.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			
@@ -144,6 +193,10 @@ public class HomeController {
 			}
 		});
 		
-		new Thread(task).start();
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		executorService.submit(task);
+		
+		executorService.shutdown();
 	}
 }

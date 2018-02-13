@@ -61,6 +61,10 @@ public class MethodGenerator extends AbstractGenerator {
 				continue;
 			}
 			
+			if(method.getName().startsWith("access$")) {
+				continue;
+			}
+			
 			lines.add(generate(method));
 		}
 

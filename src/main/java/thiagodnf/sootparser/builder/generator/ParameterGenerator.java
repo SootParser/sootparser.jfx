@@ -35,6 +35,10 @@ public class ParameterGenerator extends AbstractGenerator {
 				continue;
 			}
 			
+			if(method.getName().startsWith("access$")) {
+				continue;
+			}
+			
 			List<Type> types = method.getParameterTypes();
 			
 			for(Type type : types) {

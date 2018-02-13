@@ -39,17 +39,17 @@ public class MessageBox {
 		message(stage, AlertType.ERROR, "Ooops...", message);
 	}
 	
-	public static void exception(Stage stage, Exception ex) {
+	public static void exception(Stage stage, Throwable throwable) {
 		Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.initStyle(StageStyle.UTILITY);
         alert.setTitle("Ooops...");
         alert.setHeaderText(null);
-        alert.setContentText(ex.getMessage());
+        alert.setContentText(throwable.getMessage());
         alert.initOwner(stage);
         
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        ex.printStackTrace(pw);
+        throwable.printStackTrace(pw);
         String exceptionText = sw.toString();
 
         Label label = new Label("Details:");
