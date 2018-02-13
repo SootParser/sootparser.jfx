@@ -23,16 +23,12 @@ public class Launcher extends Application {
 	public static void main(String[] args) throws Exception {
 		
 		LOGGER.info("Starting SootParser");
-		LOGGER.info("Operational System: {}", System.getProperty("os.name"));
 		LOGGER.info("User Directory: {}", System.getProperty("user.dir"));
+		LOGGER.info("Operational System Name: {}", System.getProperty("os.name"));
+		LOGGER.info("Operational System Arch: {}", System.getProperty("os.arch"));
+		LOGGER.info("Operational System Version: {}", System.getProperty("os.version"));
 		
 		if (OSUtil.isMac()) {
-			
-			System.setProperty("apple.awt.graphics.EnableQ2DX", "true");
-			System.setProperty("apple.laf.useScreenMenuBar", "true");
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "SootParser");
-			System.setProperty("apple.awt.application.name", "SootParser");
-			
 			try {
 				URL iconURL = Launcher.class.getResource("/images/icon.png");
 				java.awt.Image image = new ImageIcon(iconURL).getImage();

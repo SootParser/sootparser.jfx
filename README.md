@@ -8,6 +8,12 @@ SootParser Powered by JavaFX
 
 <img src="https://raw.githubusercontent.com/sootparser/sootparser/master/src/main/resources/images/screenshot.png" />
 
+# Compile
+
+```sh
+mvn clean compile jfx:jar
+``
+
 # Libraries
 
 This project is developed by using the tools described as follows:
