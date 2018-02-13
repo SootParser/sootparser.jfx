@@ -2,6 +2,8 @@
 
 SootParser Powered by JavaFX
 
+[![Build Status](https://travis-ci.org/sootparser/sootparser.svg?branch=master)](https://travis-ci.org/sootparser/sootparser)
+
 # Screenshot
 
 <img src="https://raw.githubusercontent.com/sootparser/sootparser/master/src/main/resources/images/screenshot.png" />
